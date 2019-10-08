@@ -24,19 +24,23 @@ public class ProduttoreOOP {
 	}
 	
 	public void doThings(){
-		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));	
-		
-		try (FileWriter writer = new FileWriter(path)){
-			//Faccio in modo di leggere da tastiera (System.in) finché non ricevo CRTL+D (CRTL+Z)
-			while((ch = reader.read()) != -1) writer.write((char)ch);
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+
+			try (FileWriter writer = new FileWriter(path)) {
+				//Faccio in modo di leggere da tastiera (System.in) finché non ricevo CRTL+D (CRTL+Z)
+				while ((ch = reader.read()) != -1) writer.write((char) ch);
+			} catch (IOException e) {
+				e.printStackTrace();
+				System.exit(1);
+			}
+
+			//Dato che quando ricevo EOF, lo stream è chiuso non ha senso fare la close.
+			//Però anche se la faccio, non fa nulla
+			//reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
-			System.exit(1);
+			System.exit(2);
 		}
-		
-		//Dato che quando ricevo EOF, lo stream è chiuso non ha senso fare la close.
-		//Però anche se la faccio, non fa nulla
-		reader.close();
 	}
 	
 	
