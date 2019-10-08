@@ -6,6 +6,7 @@
 #include <sys/time.h>
 
 //consumatore filterprefix filedaconsumare.txt
+//consumatore filterprefix < filedaconsumare.txt
 
 #define INV_ERR 1
 #define OPEN_ERR 2
@@ -16,13 +17,22 @@ int main(int argc, char *argv[]){
     struct timezone tz;
     gettimeofday(&tv, &tz);
     int start = tv.tv_usec;
+    int fd;
 
-    if(argc != 3){
+    //Stessa cosa qua bisogna verificare il numero di argomenti.
+    
+    if(argc == 2){
+        //consumatore filterprefix < filedaconsumare.txt
+        fd = 0;
+    }else if(argc == 3){
+        //consumatore filterprefix filedaconsumare.txt
+        fd = open(argv[2], O_RDONLY);
+    }else{
         perror("Invocazione: consumatore filterprefix filedaconsumare.txt");
         exit(INV_ERR);
     }
+    
 
-    int fd = open(argv[2], O_RDONLY);
     if(fd < 0){
         perror("P0: Impossibile aprire il file");
         exit(OPEN_ERR);
